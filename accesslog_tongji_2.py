@@ -6,7 +6,7 @@ for line in f:
     ip = line.split(' ')[0]
     res[ip] = res.get(ip,0)+1
 '''
-    tag: Use res.get replace if
+    用 res.get 替换 if else 方法
     if ip in res:
        res[ip] += 1
     else:
@@ -15,11 +15,11 @@ for line in f:
 f.close()
 #print res
 
-#ip count done
+#获取IP地址
 res_list = res.items()
 #print res_list
 
-#maopao
+#冒泡方法取出前10名
 for j in range(10):
     for i in range(len(res_list)-1):
       if res_list[i][1] > res_list[i+1][1]:
