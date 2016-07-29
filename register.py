@@ -5,7 +5,7 @@
 #获取用户
 def get_user():
     res = {}
-    with open('E:\Python-Reboot\dbfile.txt') as db:
+    with open('/root/dbfile.txt') as db:
         for line in db:
             tmp = line.rstrip('\n').split(':')
             res[tmp[0]] = tmp[1]
@@ -14,17 +14,17 @@ def get_user():
 
 #注册
 def register():
-    with open('E:\Python-Reboot\dbfile.txt', 'a+') as db:
+    with open('/root/dbfile.txt', 'a+') as db:
         while True:
             username = raw_input("请输入用户名: ").strip()
+            password = raw_input("请输入密码: ").strip()
+            repass = raw_input("请再次输入密码: ").strip()
             if len(username) == 0:
                 print "用户名不能为空,请重新输入!!!"
                 continue
             elif username in get_user():
                 print "该用户名已存在,请重新输入!!!"
-                continue
-                password = raw_input("请输入密码: ").strip()
-                repass = raw_input("请再次输入密码: ").strip()
+		continue
             elif len(password) == 0 or password != repass:
                 print "密码与上一次输入不一致!!!"
                 continue
@@ -53,18 +53,21 @@ def login():
             print "恭喜你,登录成功!!!"
             break
 
+def start():
+    while True:
+        result = raw_input("1.登录\n2.注册\n3.退出\n\n\n").strip()
+        res = get_user()
+        if result == '1':
+            login()
+            break
+        elif result == '2':
+            register()
+            break
+        elif result == '3':
+            break
+        else:
+            print "没有选择任何功能现在退出"
+            break
 
-while True:
-    result = raw_input("1.登录\n2.注册\n3.退出\n\n\n").strip()
-    res = get_user()
-    if result == '1':
-        login()
-        break
-    elif result == '2':
-        register()
-        break
-    elif result == '3':
-        break
-    else:
-        print "没有选择任何功能现在退出"
-        break
+if __name__ == '__main__':
+    start()
