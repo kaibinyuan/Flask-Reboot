@@ -1,0 +1,27 @@
+Hello {{word}} Your age is {{age}}
+
+<form action='/adduser'>
+    name:<input type='text' name='name'>
+    password:<input type='text' name='password'>
+    <input type='submit' value='add'>
+</form>
+
+
+<table border='1'>
+    <thead>
+        <tr>
+	<td> Name </td>
+	<td>  pwd </td>
+	</tr>
+    </thead>
+    <tbody>
+	{% for name in names %}
+        {% if name[0] and name[1]%}
+	<tr>
+	    <td>{{name[0]}} </td>
+	    <td>{{name[1]}}</td>
+	</tr>
+        {%endif%}
+	{%endfor%}
+    </tbody>
+</table>
