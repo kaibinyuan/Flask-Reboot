@@ -54,7 +54,7 @@ def register():
             # return  json.dumps('code':1,'errmsg':'The two passwords you typed do not match.'
             errmsg = 'The two passwords you typed do not match'
             return render_template("register.html",result=errmsg)
-		#将前端传递的数据写入数据库如果不成功,则执行except语句
+		#将前端传递的数据写入数据库返回个人信息页面,如果不成功,则执行except语句
         try:
             sql = 'INSERT INTO users (%s) VALUES (%s)' % (','.join(fields), ','.join(['"%s"' % data[x] for x in fields]))
             cur.execute(sql)
@@ -98,25 +98,33 @@ def userlist():
 # 获取单个用户信息，注册成功传name作为where条件，查询这条数据，更新操作需要传id来获取数据，
 @app.route('/userinfo')
 def userinfo():
+	#将前端传来的'id'和'name'保存到字典where中
     where = {}
     where['id'] = request.args.get('id',None)
     where['name'] = request.args.get('name',None)
+	#如果没有传入'id'或者'name'则抛出异常'errmsg'并返回'index.html'
     if not where['id']  and not where['name']:
         errmsg  = "must hava a where"
         return render_template('index.html', result = errmsg )
+	#如果传进来'id'但是没有传入'name'则condition = 'id = where[id]'(字典的格式化输出)
     if where['id'] and not where['name']:
        condition = 'id = "%(id)s"' % where
+	#如果传进来'name'但是没有传入'id'则condition = 'name = where[name]'(字典的格式化输出)
     if where['name'] and not where['id']:
        condition = 'name = "%(name)s"' % where
-    fields = ['id', 'name', 'name_cn', 'email', 'mobile'] 
+	#定义需要查询的字段,并执行sql
+    fields = ['id', 'name', 'name_cn', 'email', 'mobile']
+	#从数据库中获取个人信息
     try:
         sql = "select %s from users where %s" % (','.join(fields),condition)
         cur.execute(sql)
-        res = cur.fetchone()
+        res = cur.fetchone()#返回一个一阶元组((u'mofang', u'mofang', u'123', u'haojing@mofanghr.com'),)
+		#定义一个空的字典'user',循环字段'fields',拼接字段'user' {'fields[key]':'res[index]'}
         user = {}
         for i,k in enumerate(fields):    
             user[k]=res[i]   
         return  render_template('index.html', user = user)
+	#获取用户信息失败,抛出异常'errmsg'，返回个人信息页面
     except:
         errmsg  = "get one failed"
         print traceback.print_exc()
@@ -127,29 +135,40 @@ def userinfo():
 # 有人，暂且不分
 @app.route('/update',methods=['GET','POST'])
 def update():
+	#如果请求的方式为post
     if request.method == "POST":
         print request.form          # 这是个高级写法，把请求内容直接搞成字典，课上会细讲,打印看看长啥样
         data = dict(request.form)   # 转为字典打印出来看张啥样
-        print data                  # {'status': [u'0'], 'role': [u'admin'],....}
-        conditions = [ "%s='%s'" %  (k,v[0]) for k,v in data.items()]
+        print data                  # {'status': [u'0'], 'role': [u'admin'], 'name': [u'xiaohong'], 'mobile': [u'13688888888'] ...}
+		#"for k,v in data.items()" = "status [u'0'],mobile [u'13688888888'],role [u'admin'] ..."
+		#"(k,v[0])" = "status 0,mobile 13688888888,role admin ..."
+		#"%s='%s'" = status = 0
+		#condition = ['status=0','mobile=13688888888','role'=admin ...]
+        conditions = [ "%s='%s'" %  (k,v[0]) for k,v in data.items()]	
         sql = "update users set %s where id = %s" % (','.join(conditions),data['id'][0])
         print sql
         cur.execute(sql)
         return redirect('/userlist')
+	#如果请求的方式不为post
     else:
+	   #获取用户个人id,如果前端没有传递进来'id'则抛出异常'errmsg'并且返回更新页面
        id = request.args.get('id',None)
        if not id:
            errmsg = "must hava id"
            return render_template("update.html",result=errmsg)
+	   #尝试从数据库中获取个人信息
        fields = ['id', 'name', 'name_cn', 'email', 'mobile'] 
        try:
            sql = "select %s from users where id = %s " % (','.join(fields),id)
            cur.execute(sql)
-           res = cur.fetchone()
+           res = cur.fetchone()#返回一个一阶元组((u'mofang', u'mofang', u'123', u'haojing@mofanghr.com'),)
+		   #定义一个空的字典'user',循环字段'fields',拼接字段'user' {'fields[key]':'res[index]'}
            user = {}
            for i,k in enumerate(fields):    
-               user[k]=res[i]   
+               user[k]=res[i]
+		   #将个人信息user传递到前端页面'update.html'
            return  render_template('update.html', user = user)
+	   #从数据库中获取个人信息失败抛出异常'errmsg'并返回'update.html'
        except:
            errmsg = "get one failed"
            print traceback.print_exc()
@@ -158,14 +177,18 @@ def update():
 # 删除，只有传入一个id作为where条件即可，删除成功挑战userlist，生产环境中管理员才有权限，本课暂不区分
 @app.route('/delete',methods=['GET'])
 def delete():
+	#获取前端传递过来的'id'
     id = request.args.get('id',None)
+	#如果'id'不存在,则抛出异常'errmsg'并返回用户列表页面
     if not id:
           errmsg = "must hava id" 
           return render_template("userlist.html",result=errmsg)
+	#尝试从数据库中删除该用户数据,然后返回用户列表页面
     try:
         sql = "delete from users where id = %s" % id
         cur.execute(sql)
         return redirect('/userlist ')
+	#如果尝试不成功则抛出异常'errmsg',然后返回用户列表页面
     except:
         errmsg = "delete failed" 
         return render_template("userlist.html",result=errmsg)
