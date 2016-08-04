@@ -23,6 +23,7 @@
 	    <td>{{user.name_cn}}</td>
 	    <td>{{user.email}}</td>
 	    <td>{{user.mobile}}</td>
+	    <!-- 获取用户id与该用户绑定为按钮 -->
 	    <td> <a href="/update?id={{ user.id }}"><input type="button" name="update" data-id='{{ user.id }}'value="更新"></a>
         <a href="/delete?id={{ user.id }}"> <input type="button" name="del" data-id='{{ user.id }}' value="删除"></a></td>
 	</tr>

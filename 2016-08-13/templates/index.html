@@ -1,8 +1,10 @@
+<!-- 如果后端存在报错'result'则返回 -->
 {% if result %}
 <p style="color:red">{{result}}</p>
 {% endif %}
+<!-- 定义表格 -->
 <table border='1'>
-    <thead>
+    <thead><!-- 表头 start -->
         <tr>
 	    <td>用户名</td>
 	    <td>中文名</td>
@@ -10,19 +12,20 @@
 	    <td>手机号</td>
 	    <td>操作</td>
         </tr>
-    </thead>
+    </thead><!-- 表头end -->
 
-    <tbody>
-      {% if user %}
+    <tbody><!-- data start -->
+      {% if user %}<!-- 如果后端传过来users,执行下面 -->
 	<tr>
 	    <td>{{user.name}}</td>
 	    <td>{{user.name_cn}}</td>
 	    <td>{{user.email}}</td>
 	    <td>{{user.mobile}}</td>
+		<!-- 定义按钮表单,超链接为更新页面 -->
 	    <td> <a href="/update?id={{user.id}}"><input type="button" name="update" data-id='{{ user.id }}' value="更新"></a></td>
 	</tr>
       {%endif%}
-    </tbody>
+    </tbody><!-- data end -->
 
 
 </table>
