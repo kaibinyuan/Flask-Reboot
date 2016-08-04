@@ -1,21 +1,23 @@
-
+<!-- 如果后端存在result(报错信息)则返回 -->
 {% if result %}
 <p style="color:red">{{result}}</p>
 {% endif %}
+<!-- 数据表格 -->
 <table border='1'>
-    <thead>
-        <tr>
-	    <td>用户名</td>
+	
+    <thead><!-- 表头 start -->
+        <tr><!-- 1行 -->
+	    <td>用户名</td><!-- 1列-->
 	    <td>中文名</td>
 	    <td>邮箱</td>
 	    <td>手机号</td>
 	    <td>操作</td>
-        </tr>
+        </tr><!-- 表头 end -->
     </thead>
-
-    <tbody>
-      {% if users %}
-      {%for user in users%}
+	
+    <tbody><!-- body start -->
+      {% if users %}<!-- 如果后端传入users则执行下面 -->
+      {%for user in users%}<!-- 遍历users -->
 	<tr>
 	    <td>{{user['name']}}</td>
 	    <td>{{user.name_cn}}</td>
@@ -26,7 +28,7 @@
 	</tr>
       {%endfor%}
       {%endif%}
-    </tbody>
+    </tbody><!-- body end -->
 
 
 </table>
