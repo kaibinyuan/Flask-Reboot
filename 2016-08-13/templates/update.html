@@ -1,14 +1,17 @@
 <html>
+<!-- 标题start -->
 <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="UTF-8">
     <title>用户管理系统</title>
 </head>
+<!-- 标题end -->
 <body>
 <div>
+  <!-- 如果后端传过来'result'(报错信息)则返回 -->
   {% if result %}
   <p style="color:red">{{ result }}</p>
   {% endif%}
-  
+  <!-- 如果存在user则执行下列指令 -->
   {% if user %}
   <form id="updateForm" action='/update' method='post' accept-charset="UTF-8">
         <input type="hidden" id='id' name="id" value='{{user.id}}'>  <!--update need id-->
@@ -48,7 +51,6 @@
             </select>
          </div> <!--status-->
 
-        
         <div>
             <button type="submit">更新信息</button>
             <button >退出</button>
