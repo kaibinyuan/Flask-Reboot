@@ -1,3 +1,6 @@
-test1:test1
-test2:test2
-test3:test4
+(dp0
+S'lalala'
+p1
+S'45678'
+p2
+s.

@@ -1,41 +1,62 @@
+#!/usr/bin/env python
+#coding:utf8
+import pickle
 
-def showuser(filename):
-    with open(filename) as f:
-        users = [ line.split(":") for line in f.read().split('\n') ]
-        return users
+#ADD
+def Create(username,password):
+#    users = {'pc':'123456','wd':'123','kk':'234'}
+    users = {username:password}
+#pickle模块是以二进制形式存储在文件中,故必须以二进制形式打开
+    with open('user.txt','wb') as f:
+#将字典写入文件
+	pickle.dump(users,f)
 
-def register(filename,mode,name,pwd):
-    with open(filename,mode) as f:
-        f.write('%s:%s\n'%(name,pwd))
+#DELETE
+def Delete(username):
+    name = username
+    content = {}
+#导入字典的时候不能用wb模式
+    with open('user.txt') as f:
+#将文件导入到字典中
+	content = pickle.load(f)
+    	content.pop(name)
+#修改后的字典再次写入文件,文件必须以二进制的形式打开
+    with open('user.txt','wb') as f:
+	pickle.dump(content,f)
 
-def deluser(filename,mode1,mode2,username):
-    with open(filename,mode1) as f:
-        users = f.read().split('\n')
-        for user in users:
-            if user.split(':')[0] == username:
-                users.remove(user)
-                with open(filename,mode2) as f:
-                    f.write("\n".join(users))
+#Modify
+def Modify(username,password):
+    name = username
+    password = password
+    content = {}
+    with open('user.txt') as f:
+	content = pickle.load(f)
+	content[name]= password
+    with open('user.txt','wb') as f:
+	pickle.dump(content,f)
 
-def res_dict(filename,name,pwd):
-    d = {}
-    with open(filename) as f:
-        content = f.readlines()
-        for user in content:
-             dict_name = user.rstrip("\n").split(":")[0]
-             d[dict_name] = user.rstrip("\n").split(":")[1]
-	return d
+#Find All
+def Select():
+    content = {}
+    with open('user.txt') as f:
+	content = pickle.load(f)
+    for k,v in content.items():
+	print "用户信息: %s ---> %s" %(k,v)
+    return content
 
-def edit(filename,mode,name,pwd):
-    with open(filename) as f:
-        users = f.read().split('\n')[:-1]
-        for key,user in enumerate(users):
-            if user.split(':')[0] == name and user.split(':')[1] != pwd:
-                users[key] = name+':'+pwd
-                users.append('')
-                with open(filename,mode) as f:
-                    f.write('\n'.join(users))
-
-            else:
-                return "can not modify the name"
-
+#Find One
+def SelectOne(username):
+    name = username
+    content = {}
+    userinfo = {}
+    with open('user.txt') as f:
+	content = pickle.load(f)
+    userinfo[name] = content[name]
+    print userinfo
+    return userinfo
+    
+Create('lalala','123456')
+#Delete()
+Modify('lalala','45678')
+Select()
+#SelectOne('pc')
