@@ -1,0 +1,85 @@
+<html>
+<!-- 定义表头-->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <title>用户管理系统</title>
+</head>
+<!-- Html内容-->
+<body>
+<div>
+  <!-- 如果后端存在result(报错信息)则返回 -->
+  {% if result %}
+  <p style="color:red">{{ result }}</p>
+  {% endif%}
+  <!-- 为'/register'定义表单,方法为post,字符集为UTF-8 -->
+  <form id="addForm" action='/register' method='post' accept-charset="UTF-8">
+		
+		<!-- 获取用户名,往后端传递的为'name',类型是'text' -->
+        <div>
+            <label>用户名：</label>
+            <input id='name' type='text' name='name'>
+        </div> <!-- name -->
+		
+		<!-- 获取中文名,往后端传递的为'name_cn',类型是'text' -->
+        <div>
+            <label>中文名：</label>
+            <input id='name_cn' type='text' name='name_cn'>
+        </div><!-- name_cn-->
+		
+		<!-- 获取手机号,往后端传递的为'mobile',类型是'text' -->
+        <div>
+            <label>手机号：</label>
+            <input id='mobile' type='text' name='mobile'>
+        </div><!-- mobile --> 
+       
+	   <!-- 获取邮箱号,往后端传递的为'email',类型是'text' -->
+       <div>
+            <label>邮箱号：</label>
+            <input id='email' type='text' name='email'>
+        </div><!-- email -->
+		
+		<!-- 获取角色,往后端传递的为'admin'或者是'role',类型为复选框 -->
+        <div>
+            <label>角色：</label>
+            <select name='role' id='role'>
+                <option value="admin">管理员</option>
+                <option value="user">普通用户</option>
+            </select>
+         </div> <!--role-->
+		 
+		<!-- 获取角色,往后端传递的为'0'或者是'1',类型为复选框 -->
+        <div>
+            <label>状态：</label>
+            <select name='status' id='status'>
+                <option value=0>正常</option>
+                <option value=1>锁定</option>
+            </select>
+         </div> <!--status-->
+		
+		<!-- 获取密码,往后端传递的为'password',类型是'password' -->
+        <div>
+            <label>密码：</label>
+            <input id='password' type='password' name='password'>
+        </div><!-- password-->
+		
+		<!-- 获取密码,往后端传递的为'password',类型是'password' -->
+        <div>
+            <label>重复密码：</label>
+            <input id='repwd' type='repwd' name='repwd'>
+        </div><!-- repwd-->
+		
+        <!-- 提交表单,向后端传递上述表单标签的所有信息,类型为'submit' -->
+        <div>
+            <button type="submit">添加用户</button>
+            <button >退出</button>
+        </div> <!--button-->
+
+    </form><!--form end-->
+
+</div>
+</body>
+</html>
+
+
+
+
