@@ -83,11 +83,12 @@ def userlist():
 		#循环该元组,定义一个空的字典'user'{key:字段名,value:单条数据[索引]}，定义一个空的列表'users'[{key:字段名,value:单条数据[索引]},{key:字段名,value:单条数据[索引]}]
 		#[{'mobile': u'1344444444', 'email': u'reboot@126.com', 'name_cn': u'kaibinyuan', 'id': 2L, 'name': u'yuanbinbin'}, 
 		# {'mobile': u'13888888', 'email': u'haojing@mofanghr.com', 'name_cn': u'taotao', 'id': 3L, 'name': u'pangyantao'}]
-        for row in result:
-            user = {}
-            for i, k in enumerate(fields):
-                user[k] = row[i]
-            users.append(user)    
+        #for row in result:
+        #    user = {}
+        #    for i, k in enumerate(fields):
+        #        user[k] = row[i]
+        #    users.append(user)    
+	users = [ dict((k,row[i]) for i, k in enumerate(fields)) for row in result]
         return  render_template('userlist.html', users = users)
 	#获取数据失败,返回注册页面并抛出异常'errmsg'
     except:
@@ -193,18 +194,41 @@ def delete():
         errmsg = "delete failed" 
         return render_template("userlist.html",result=errmsg)
 
-
-
-    
-
-'''
-# 登录页面，太简单，不写了
-@app.route('/login')
+@app.route('/login',methods=['GET','POST'])
 def login():
     name = request.form.get('name')
     pwd = request.form.get('password')
-    
-'''		    
+    if not name and not pwd:
+	errmsg = "username and password not null"
+	return render_template('login.html',result=errmsg)
+    if not name and pwd:
+	errmsg = "username not null"
+	return render_template('login.html',result=errmsg)
+    if not name and pwd:
+	errmsg = "password not null"
+	return render_template('login.html',result=errmsg)
+    fields = ['id', 'name', 'password']
+    try:
+	sql = "select %s from users where name=%s" %(','.join(fields),name)
+	cur.execute(sql)
+	res = cur.fetchone()
+	user = {}
+	for i,k in enumerate(fields):
+	    user[k]=res[i]
+	if name in user:
+	    if pwd == user[name]:
+		id = user['id']
+		return redirect('/userinfo ',id = id)
+	    else:
+		errmsg = "password not correct"
+		return render_template('login.html',result=errmsg)
+	else:
+	    errmsg = "user not found"
+	    return render_template('login.html',result=errmsg)
+    except:
+	errmsg = "login failed" 
+	return render_template("login.html",result=errmsg)
+
         
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8888,debug=True)

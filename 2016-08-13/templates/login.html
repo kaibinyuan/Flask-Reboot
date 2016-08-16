@@ -1,0 +1,34 @@
+<html>
+<!-- 定义表头-->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <title>用户管理系统</title>
+</head>
+<body>
+<div>
+  <!-- 如果后端存在result(报错信息)则返回 -->
+  {% if result %}
+  <p style="color:red">{{ result }}</p>
+  {% endif%}
+  <!-- 为'/register'定义表单,方法为post,字符集为UTF-8 -->
+  <center>
+  <form id="loginForm" action='/login' method='post' accept-charset="UTF-8">
+		<h4>用户登录</h4>
+  		<!-- 获取用户名,往后端传递的为'name',类型是'text' -->
+        <div>
+            <label>用户名：</label>
+            <input id='name' type='text' name='name'>
+        </div> <!-- name -->
+
+		<!-- 获取密码,往后端传递的为'password',类型是'password' -->
+        <div>
+            <label>密码：</label>
+            <input id='password' type='password' name='password'>
+        </div><!-- password-->
+
+		<div>
+            <button type="submit">登录</button>
+        </div> <!--button-->
+</div>		
+</body>
+</html>
