@@ -196,38 +196,45 @@ def delete():
 
 @app.route('/login',methods=['GET','POST'])
 def login():
-    name = request.form.get('name')
-    pwd = request.form.get('password')
-    if not name and not pwd:
-	errmsg = "username and password not null"
-	return render_template('login.html',result=errmsg)
-    if not name and pwd:
-	errmsg = "username not null"
-	return render_template('login.html',result=errmsg)
-    if not name and pwd:
-	errmsg = "password not null"
-	return render_template('login.html',result=errmsg)
-    fields = ['id', 'name', 'password']
-    try:
-	sql = "select %s from users where name=%s" %(','.join(fields),name)
-	cur.execute(sql)
-	res = cur.fetchone()
-	user = {}
-	for i,k in enumerate(fields):
-	    user[k]=res[i]
-	if name in user:
-	    if pwd == user[name]:
-		id = user['id']
-		return redirect('/userinfo ',id = id)
-	    else:
-		errmsg = "password not correct"
-		return render_template('login.html',result=errmsg)
-	else:
-	    errmsg = "user not found"
+    if request.method == "GET":
+	return render_template("login.html")
+    if request.method == "POST":
+	name = request.form.get('name')
+	pwd = request.form.get('password')
+	print "name:%s,password:%s" %(name,pwd)
+	if not name and not pwd:
+	    errmsg = "username and password not null"
 	    return render_template('login.html',result=errmsg)
-    except:
-	errmsg = "login failed" 
-	return render_template("login.html",result=errmsg)
+	if not name and pwd:
+	    errmsg = "username not null"
+	    return render_template('login.html',result=errmsg)
+	if not pwd and name:
+	    errmsg = "password not null"
+	    return render_template('login.html',result=errmsg)
+	fields = ['id', 'name', 'password']
+	try:
+	    sql = "select %s from users where name='%s'" %(','.join(fields),name)
+	    #print sql
+	    cur.execute(sql)
+	    res = cur.fetchone()
+	    user = {}
+	    for i,k in enumerate(fields):
+		user[k]=res[i]
+	    #print user['name'],name
+	    #print user['password'],pwd
+	    if name == user['name']:
+		if pwd == user['password']:
+		    return redirect('/userinfo?name=%s' % user['name'])
+		    #return redirect('/userlist')
+		else:
+		    errmsg = "password not correct"
+		    return render_template('login.html',result=errmsg)
+	    else:
+		errmsg = "user not found"
+		return render_template('login.html',result=errmsg)
+	except:
+	    errmsg = "login failed" 
+	    return render_template("login.html",result=errmsg)
 
         
 if __name__ == '__main__':
