@@ -30,18 +30,19 @@ def register():
 #如果请求方式为'post'
     if request.method == 'POST':
 #从html模板中获取用户信息,并保存在data字典中
-        data =  {} 
-        data["name"] = request.form.get('name',None)
-        data["name_cn"] = request.form.get('name_cn',None)
-        data["mobile"] = request.form.get('mobile',None)
-        data["email"] = request.form.get('email',None)
-        data["role"] = request.form.get('role',None)
-        data["status"] = request.form.get('status',None)
-        data["password"] = request.form.get('password',None)
-        data["repwd"] = request.form.get('repwd',None)
+        #data =  {} 
+        #data["name"] = request.form.get('name',None)
+        #data["name_cn"] = request.form.get('name_cn',None)
+        #data["mobile"] = request.form.get('mobile',None)
+        #data["email"] = request.form.get('email',None)
+        #data["role"] = request.form.get('role',None)
+        #data["status"] = request.form.get('status',None)
+        #data["password"] = request.form.get('password',None)
+        #data["repwd"] = request.form.get('repwd',None)
+        print request.form  		#ImmutableMultiDict([('status', u'0'), ('name', u'nginx'), ('mobile', u'1355555555'), ('name_cn', u'tengine') ...)
+ 	print dict(request.form)	#{'status': [u'0'], 'name': [u'nginx'], 'mobile': [u'1355555555'], 'name_cn': [u'tengine'] ...}
+	data = dict((k,v[0]) for k,v in dict(request.form).items()) #{'status': u'0', 'name': u'nginx', 'mobile': u'1355555555', 'name_cn': u'tengine' ...}
         data["create_time"] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
-        # data = request.form
-        # data = request.get_json()
         print data
 #数据库操作
         fields = ['name','name_cn','mobile','email','role','status','password','create_time']
@@ -202,22 +203,28 @@ def delete():
 
 @app.route('/login',methods=['GET','POST'])
 def login():
+    #如果请求的方式为"POST"方式执行以下
     if request.method == "POST":
+	#收集前端收集的post请求参数
 	data = dict((k,v[0]) for k,v in dict(request.form).items())
+	#如果前端未收集到'name'或者'password'则抛出异常'errmsg'并重定向到'login.html'
 	if not data.get('name',None) or not data.get('password',None):
 	    errmsg = 'name or password not null'
 	    return render_template('login.html',result=errmsg)
-
+	#拼接sql语句,查询数据库
 	fields = ['name', 'password','role']
 	sql = 'select %s from users where name ="%s"' % (','.join(fields),data['name'])
 	cur.execute(sql)
 	res = cur.fetchone()
+	#如果数据库中不存在该'name',则抛出异常'errmsg'并重定向到'login.html'
 	if not res:
 	    errmsg = "%s is not exist" % data['name']
 	    return  render_template('login.html',result=errmsg)
+	#用查询字段当做'key',并用数据中查询出来的数据当做'value'拼接成一个字典'user'
 	user = {}
 	user = dict((k,res[i]) for i,k in enumerate(fields)) #{'password': u'aaa', 'name': u'reboot'}
 	#print user
+	#判断从数据库中取出'password'的用户输入的password
 	if user['password'] != data['password']: 
 	    errmsg = 'password is wrong'
 	    return render_template('login.html',result=errmsg)
@@ -226,6 +233,7 @@ def login():
 	    session['name'] = user['name']
 	    session['role'] = user['role']
 	    return redirect('/userlist')
+    #如果请求的方式为"GET"方式执行以下
     else:
             return render_template('login.html')
 #删除session
