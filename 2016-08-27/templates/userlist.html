@@ -1,0 +1,35 @@
+<!-- 如果后端存在result(报错信息)则返回 -->
+{% if result %}
+<p style="color:red">{{result}}</p>
+{% endif %}
+<!-- 数据表格 -->
+<table border='1'>
+	
+    <thead><!-- 表头 start -->
+        <tr><!-- 1行 -->
+	    <td>用户名</td><!-- 1列-->
+	    <td>中文名</td>
+	    <td>邮箱</td>
+	    <td>手机号</td>
+	    <td>操作</td>
+        </tr><!-- 表头 end -->
+    </thead>
+	
+    <tbody><!-- body start -->
+      {% if users %}<!-- 如果后端传入users则执行下面 -->
+      {%for user in users%}<!-- 遍历users -->
+	<tr>
+	    <td>{{user['name']}}</td>
+	    <td>{{user.name_cn}}</td>
+	    <td>{{user.email}}</td>
+	    <td>{{user.mobile}}</td>
+	    <!-- 获取用户id与该用户绑定为按钮 -->
+	    <td> <a href="/update?id={{ user.id }}"><input type="button" name="update" data-id='{{ user.id }}'value="更新"></a>
+        <a href="/delete?id={{ user.id }}"> <input type="button" name="del" data-id='{{ user.id }}' value="删除"></a></td>
+	</tr>
+      {%endfor%}
+      {%endif%}
+    </tbody><!-- body end -->
+
+
+</table>

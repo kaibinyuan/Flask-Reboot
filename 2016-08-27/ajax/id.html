@@ -1,0 +1,27 @@
+<body>
+<div id="divtest">222222222</div>
+<div id="aaaa"></div>
+<div id="default"></div>
+<button id="btn" type="button" data-id='1'>Click me</button>
+<p class="reboot">111111</p>
+<p class="reboot">111111</p>
+<p class="reboot">111111</p>
+<p class="reboot">111111</p>
+<p class="reboot">111111</p>
+<script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery/jquery-1.4.min.js"></script>
+<script>
+alert($("#divtest").html())  /*获取选中元素的值*/
+$("#aaaa").html("nihao");		/*设置选中元素的值*/
+
+/* $("button").click(function(){ */
+$("button").dblclick(function(){
+     $("#default").html($("#divtest").html());	/*将某个选中元素的值赋值给另一个选中元素*/
+	 $(".reboot").css("color","red");
+	 $('p').css("color","green");
+	 $('div').css("color","blue");
+	 $('#aaa,p').css("color","yellow");
+})
+$("#aaaa").css("color","yellow")
+$("#default").css("color",'red')
+</script>
+</body>	

@@ -5,29 +5,22 @@
 <title>Login</title>
 </head>
 <body>
-    <form id="LoginForm">
+   <form method="post" action="/login">
+  <!--  <form id="LoginForm"> -->
         <input id = "name" type="text" name="name" placeholder="username">
         <input id = "password" type="password" name="password" placeholder="password">
         <input id = "loginbtn" type="submit" value="登陆">
     </form>
-<script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery/jquery-1.4.min.js"></script>
+    {% if result %}
+    <div style="color:red">
+        {{result}}
+    </div>
+    {% endif %}
+<!--
+<script src="/static/js/jquery-3.1.0.min.js"></script>
 <script>
-$('#loginbtn').click(function(){
-    var str = $('#LoginForm').serialize()
-    console.log(str)
-    $.post("/add",str,function(data){
-	console.log(data)
-	data = JSON.parse(data)
-	console.log(data)
-	if (data['code']==0){
-	    alert(data['result']['name'])
-	}
-	else{
-	    $('#errmsg').html(data['errmsg'])
-	}
-    )}
-       return false
-})
+//alert("welcome jquery")
 </script>
+-->
 </body>
 </html>
