@@ -8,6 +8,7 @@
     <link rel="shortcut icon" href="/static/img/facio.ico" type="image/x-icon">
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/css/style.css" rel="stylesheet">
+    <link href="/static/pulgin/sweetalert-master/dist/sweetalert.css" rel="stylesheet">
 </head>
 
 <body class="gray-bg">
@@ -35,6 +36,7 @@
     <!-- Mainly scripts -->
     <script src="/static/js/jquery-2.1.1.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/pulgin/sweetalert-master/dist/sweetalert.min.js"></script>
 
 <script>
 //alert("welcome jquery")
@@ -47,10 +49,28 @@ $('#loginbtn').on('click',function(){
           data = JSON.parse(data)
           console.log(data)  
           if (data['code']==0){
-            alert(data['result'])
-            location.href="/"
+	    //swal(data['result'])
+            //alert(data['result'])
+	    swal({   
+		title: "登录成功",   
+		text: data['result'],   
+		type: "success",
+		confirmButtonText: "确定"
+		},
+		function(){
+		    location.href="/"
+		});
+            //location.href="/"
           }else{
-            $('#errmsg').html(data['errmsg'])
+            //$('#errmsg').html(data['errmsg'])
+	    swal({
+		title: "登录失败",
+		text: data['errmsg'],   
+                type: "error",
+		//timer: 2000,   
+		//showConfirmButton: false
+		confirmButtonText: "确定"
+	   	});
            }
      })
       return false

@@ -12,13 +12,19 @@
 <!--plugins-->
 <link href="/static/pulgin/Font-Awesome-4.6.3/css/font-awesome.min.css" rel="stylesheet">
 <link href="/static/pulgin/layer-v2.4/layer/skin/layer.css" rel="stylesheet">
+<link href="/static/pulgin/sweetalert-master/dist/sweetalert.css" rel="stylesheet"><!-- Sweeralert插件 -->
+<link href="/static/pulgin/datatable/dataTables.min.css" rel="stylesheet"><!-- dataTable插件 -->
 
 
 <script src="/static/js/jquery-2.1.1.js"></script>
+<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
 <!--plugins-->
 <script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/pulgin/layer-v2.4/layer/layer.js"></script>
+<script src="/static/pulgin/sweetalert-master/dist/sweetalert.min.js"></script><!-- Sweeralert插件 -->
+<script src="/static/pulgin/datatable/dataTables.min.js"></script><!-- dataTable插件 -->
+<script src="http://validform.rjboy.cn/Validform/v5.3.2/Validform_v5.3.2_min.js"></script><!-- 表单格式插件 -->
 
 
 <!--整个页面的框架-->
@@ -64,16 +70,20 @@
 <a href="#"><i class="fa fa-group"></i> <span class="nav-label">用户管理</span><span class="fa arrow"></span></a>
    <ul class="nav nav-second-level collapse">
         <li class="group"><a href="/">个人中心</a></li>
+	{% if info.role == 'admin' %}
         <li class="user"><a href="/userlist">用户列表</a></li>
+	{% endif %}
    </ul>
 </li>   <!-- 用户管理 -->     
      
 <li id="jasset">
 <a><i class="fa fa-inbox"></i> <span class="nav-label">资产管理</span><span class="fa arrow"></span></a>
   <ul class="nav nav-second-level collapse">
+    {% if info.role == 'admin' %}
     <li class="group"><a href="/idc">机房管理</a></li>
     <li class="asset"> <a href="/cabinet">机柜管理</a></li>
     <li class="idc"> <a href="/server">服务器管理</a></li>
+    {% endif %}
   </ul> 
 </li> <!-- 资产管理 -->     
             

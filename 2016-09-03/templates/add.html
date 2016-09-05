@@ -114,8 +114,15 @@
             $.post("/add",$("#userForm").serialize(),function(data){
                 data=JSON.parse(data);
                 if(data["code"] == 0){
-                    alert(data['result'])
-                    location.href="/userlist";
+		    swal({
+		         title: "Success",
+		         text: "添加用户成功",
+		         type: "success",
+			 confirmButtonText: "确定"
+		    },
+		    function(){
+			location.href="/userlist"
+		    });
                 }else{
                     $("#errmsg").text(data["errmsg"]);
                 }

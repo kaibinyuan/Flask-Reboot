@@ -34,8 +34,8 @@
                 {% endif %}
 
                 <td class="text-center">
-                    <button data-id="{{user.id}}" class="btn btn-xs btn-info update">编辑</button>
-                    <button data-id="{{user.id}}" class="btn btn-xs btn-danger del ">删除</button>
+                    <button id= "update-user" data-id="{{user.id}}" class="btn btn-xs btn-info update">编辑</button>
+                    <button id= "del-user" data-id="{{user.id}}" class="btn btn-xs btn-danger del ">删除</button>
                 </td>
             </td>
          </tr>
@@ -50,14 +50,48 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
         <h4 class="modal-title">更新用户信息</h4>
-      </div>
+      </div><!-- modal-header end -->
       <div class="modal-body">
-        <p>just a test</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-        <button type="button" class="btn btn-primary">确认</button>
-      </div>
+	 
+          <form class="form-horizontal" id="updateForm" action='/update'>
+	      <input type="hidden"  id="id" name="id" value="">
+
+	          <div class="form-group">
+		      <label class="col-sm-2 control-label">用户名</label>
+		          <div  class="col-sm-10">
+				<input  id ="name" name="name" class="form-control" value="">
+			  </div>   
+		  </div> <!-- name  end-->
+		  
+		  <div class="form-group" >
+                      <label class="col-sm-2 control-label">姓名</label>
+                          <div class="col-sm-10">
+                             <input id="name_cn" name="name_cn" class="form-control" value="">
+			  </div>
+                  </div><!-- name_cn end -->
+		  
+		  <div class="form-group">
+                      <label class="col-sm-2 control-label">E-mail</label>
+                          <div class="col-sm-10">
+                              <input id="email" class="form-control" name="email" value="">
+                          </div>
+        	 </div> <!--email  end-->
+		
+   		  <div class="form-group">
+            	      <label class="col-sm-2 control-label">联系电话</label>
+                          <div class="col-sm-10">
+                              <input id="mobile" class="form-control"  name="mobile" value="">
+                 	 </div>
+        	 </div> <!--mobile  end-->
+
+        	 <div class="form-group">
+                     <div class="modal-footer">
+                	<button class="btn btn-primary"  id = "upinfobtn" >更新</button>
+                	<button class="btn btn-warning exit-btn" data-dismiss="modal">退出</button>
+            	    </div>
+		</div><!-- button end -->
+          </form><!-- Form end -->
+      </div><!--modal-body end -->
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
@@ -65,8 +99,62 @@
 </div> <!--col-sm-12-->
 
 <script>
+$('#editable').DataTable({
+    "language": {
+	"lengthMenu": "每页 _MENU_ 条记录",
+	"zeroRecords": "没有找到记录",
+	"sInfo": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 ),显示第 _START_ 至 _END_ 项(总共 _TOTAL_ 项)",
+	"infoEmpty": "无记录",
+	"infoFiltered": "(从 _MAX_ 条记录过滤)",
+	"sSearch": "搜索:",
+	"oPaginate": {
+	"sFirst": "首页",
+	"sPrevious": "上一页",
+	"sNext": "下一页",
+	"sLast": "末页"
+		}
+	},
+    "order": [[ 1, "asc"]]
+});
+
 $(".update").click(function(){
     $('#updateModal').modal('show')
+     var id = $(this).attr('data-id')
+     var url = "/update?id=" + id
+     $.getJSON(url,function(data){
+         // data = JSON.parse(data)
+	 $("#name").val(data["name"]);
+	 $("#name_cn").val(data["name_cn"]);
+	 $("#mobile").val(data["mobile"]);
+	 $("#email").val(data["email"]);
+	 $("#id").val(data["id"]);
+         console.log(data)
+    })
+})
+
+/* 更新用户信息 */
+$("#upinfobtn").on('click',function(){
+    var str = $("#updateForm").serialize()
+    console.log(str)
+    var data = str
+   $.post('/update',data,function(data){
+        data = JSON.parse(data) //object
+        console.log(data)
+        if(data['code'] == 0){  
+            swal({
+                title:"success",
+                text:"更新成功",
+                type:"success",
+                confirmButtonText:'确定'
+                },function(){
+                    $('#editModal').modal('hide')
+                    location.reload()
+                })
+        }else{
+                swal("error", data['errmsg'],"error")
+        }
+   })
+        return false
 })
 /* 删除用户 */
 $(".del").click(function(){
