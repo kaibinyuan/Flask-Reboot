@@ -158,18 +158,39 @@ $("#upinfobtn").on('click',function(){
 })
 /* 删除用户 */
 $(".del").click(function(){
-    if(confirm('是否确认删除? '))
-		var id = $(this).attr('data-id')
-		var url = "/delete?id=" +id
-		alert(url)
-		$.getJSON(url,function(data){
-			if (data['code'] == 0){
-				alert (data["result"])
-				location.reload()
-			}else{
-				alert(data["errmsg"])
-			}
-		})
+    //if(confirm('是否确认删除? '))
+    var id = $(this).attr('data-id')
+    var url = "/delete?id=" +id
+    //alert(url)
+    console.log(url)
+    swal({
+          title: "确认删除该用户?",
+          text: "You will not be able to recover this user",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "Yes, delete it!",
+          closeOnConfirm: false
+        },
+    function(){
+        $.getJSON(url,function(data){
+            if (data['code'] == 0){
+        	swal({
+		    title: "登录成功",
+		    text: "用户删除成功", 
+		    type: "success",
+                    confirmButtonText: "确定"
+		    },
+		    function(){
+			location.reload()
+		});
+		console.log(data["result"])
+    	    }else{
+        	swal("Deleted!", "用户删除失败", "error");
+		console.log(data["errmsg"])
+    	        }
+    		})
+	});
 })
 </script>
 {% endblock %}
