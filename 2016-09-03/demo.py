@@ -6,7 +6,7 @@ from db import *
 import hashlib
 
 app = Flask(__name__)
-app.secret_key="abcdefg"
+app.secret_key="A0Zr98j/3yX R~XHH!jmN]LWX/,?RT"
 salt = "123"
 #登录
 @app.route("/login",methods=["GET","POST"])
@@ -20,7 +20,7 @@ def login():
 	print login_info  #{'password': u'123456', 'name': u'yuanbinbin'}
 	fields = ['name','password','role','status']
 	result = checkuser({"name":login_info["name"]},fields)
-	print result   #{'status': 0, 'password': u'123456', 'role': u'admin', 'name': u'yuanbinbin'}
+	print result    #{'status': 0, 'password': u'123456', 'role': u'admin', 'name': u'yuanbinbin'}
 	if not result:
             return json.dumps({"code":1,"errmsg":"user is not exist"})
         if login_info["password"] != result['password']:
@@ -40,6 +40,7 @@ def index():
     result = getone({'name':session['username']})
     print result
     #{'status': 0, 'name': u'tantianran', 'mobile': u'1355555555', 'name_cn': u'tantianran', 'id': 15L, 'role': u'CU', 'email': u'tantianran@reboot.com'}
+    session["id"] = result['id']
     print session
     #<SecureCookieSession {u'username': u'tantianran', u'role': u'CU'}>
     return  render_template('index.html',info=session,user=result)
@@ -50,6 +51,7 @@ def logout():
     if session.get('username'):
 	session.pop('role',None)
 	session.pop('username',None)
+	session.pop('id',None)
     return redirect("/login")
 
 #用户列表
