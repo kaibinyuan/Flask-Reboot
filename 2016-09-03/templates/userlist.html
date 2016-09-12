@@ -122,24 +122,30 @@ $(".update").click(function(){
      var id = $(this).attr('data-id')
      var url = "/update?id=" + id
      $.getJSON(url,function(data){
-         // data = JSON.parse(data)
+         //data = JSON.parse(data)
 	 $("#name").val(data["name"]);
 	 $("#name_cn").val(data["name_cn"]);
 	 $("#mobile").val(data["mobile"]);
 	 $("#email").val(data["email"]);
 	 $("#id").val(data["id"]);
-         console.log(data)
+	 console.group("更新模态框 Get");
+	     console.log("udapte-url :" +url);
+             console.log(data);
+	 console.groupEnd();
+	 //console.log(data)
     })
 })
 
 /* 更新用户信息 */
 $("#upinfobtn").on('click',function(){
     var str = $("#updateForm").serialize()
-    console.log(str)
+    console.group("更新模态框 Post")
+        console.log("post-url :" +str)
     var data = str
    $.post('/update',data,function(data){
         data = JSON.parse(data) //object
-        console.log(data)
+        console.log(data);
+   console.groupEnd();
         if(data['code'] == 0){  
             swal({
                 title:"success",
@@ -162,7 +168,7 @@ $(".del").click(function(){
     var id = $(this).attr('data-id')
     var url = "/delete?id=" +id
     //alert(url)
-    console.log(url)
+    console.log("删除Url : " +url)
     swal({
           title: "确认删除该用户?",
           text: "You will not be able to recover this user",
