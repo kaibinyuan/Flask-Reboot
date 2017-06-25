@@ -5,6 +5,7 @@
 <title>Home</title>
 </head>
 <body>
+<!-- 用户添加 -->
 <h4>Add User:</h4>
     <form action="/adduser">
         <input type="text" name="username" placeholder="username">
@@ -12,12 +13,16 @@
         <input type="submit" name="add">
     </form>
 <hr>
+
+<!-- 用户删除 -->
 <h4>User Delete:</h4>
     <form action="/deluser">
         <input type="text" name="username" placeholder="username">
         <input type="submit" name="del">
     </form>
 <hr>
+
+<!-- 返回用户列表信息 -->
 <h4>User List:</h4>
 <table border="1">
     <thead>
