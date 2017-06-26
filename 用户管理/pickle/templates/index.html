@@ -1,13 +1,22 @@
-<form action='/login' method="POST">
-<div>
-用户登录
-</div>
-name:<input type='text' name='name'>
-password:<input type='password' name='password'>
-<div>
-<button type='submit'>login</button>
-</div>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Index</title>>
+</head>
+<body>
+
+<form method="post" action="/login">
+    <div>
+        <input type="text" name="username" placeholder="username">
+        <input type="password" name="password" placeholder="password">
+    </div>
+    <div>
+        <input type="submit" value="Login">
+    </div>
 </form>
+
+
 <br>
 <form action='/register'>
 <div>
@@ -27,3 +36,6 @@ password:<input type='password' name='password'>
 <button type='submit'>manage</button>
 </div>
 </form>
+
+</body>
+</html>
