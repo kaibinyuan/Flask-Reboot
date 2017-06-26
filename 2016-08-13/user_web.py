@@ -120,6 +120,7 @@ def userinfo():
     # 如果传进来'name'但是没有传入'id'则condition = 'name = where[name]'(字典的格式化输出)
     if where['name'] and not where['id']:
        condition = 'name = "%(name)s"' % where
+
     # 定义需要查询的字段,并执行sql
     fields = ['id', 'name', 'name_cn', 'email', 'mobile']
     # 从数据库中获取个人信息
@@ -131,6 +132,7 @@ def userinfo():
         user = {}
         for i, k in enumerate(fields):
             user[k] = res[i]
+        print "user: %s" % user
         return render_template('index.html', user = user)
     # 获取用户信息失败,抛出异常'errmsg'，返回个人信息页面
     except:
@@ -184,6 +186,7 @@ def update():
             print traceback.print_exc()
             return  render_template("update.html",result=errmsg)
  
+
 # 删除，只有传入一个id作为where条件即可，删除成功挑战userlist，生产环境中管理员才有权限，本课暂不区分
 @app.route('/delete',methods=['GET'])
 def delete():
