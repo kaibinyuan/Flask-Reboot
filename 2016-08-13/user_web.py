@@ -205,7 +205,7 @@ def delete():
 @app.route('/login',methods=['GET','POST'])
 def login():
     if request.method == "GET":
-	return render_template("login.html")
+        return render_template("login.html")
     if request.method == "POST":
         name = request.form.get('name')
         pwd = request.form.get('password')
@@ -227,21 +227,21 @@ def login():
             res = cur.fetchone()
             user = {}
             for i,k in enumerate(fields):
-        	user[k]=res[i]
+                user[k]=res[i]
             #print user['name'],name
             #print user['password'],pwd
             if name == user['name']:
-        	if pwd == user['password']:
-        	    return redirect('/userinfo?name=%s' % user['name'])
-        	    #return redirect('/userlist')
-        	else:
-        	    errmsg = "password not correct"
-        	    return render_template('login.html',result=errmsg)
+                if pwd == user['password']:
+                    return redirect('/userinfo?name=%s' % user['name'])
+                    # return redirect('/userlist')
+        	    else:
+                    errmsg = "password not correct"
+                    return render_template('login.html',result=errmsg)
             else:
-        	errmsg = "user not found"
-        	return render_template('login.html',result=errmsg)
+                errmsg = "user not found"
+                return render_template('login.html',result=errmsg)
         except:
-            errmsg = "login failed" 
+            errmsg = "login failed"
             return render_template("login.html",result=errmsg)
 
 
