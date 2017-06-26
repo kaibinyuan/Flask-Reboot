@@ -16,6 +16,10 @@ def login():
     if request.method == "GET":
         return render_template("user/login.html")
     if request.method == "POST":
+        # request.form: ImmutableMultiDict([('password', u'123456'), ('name', u'yuanbinbin')])
+        # dict(request.form): {'password': [u'123456'], 'name': [u'yuanbinbin']}
+        # dict(request.form).items(): [('password', [u'123456']), ('name', [u'yuanbinbin'])]
+        # login_info: {'password': u'123456', 'name': u'yuanbinbin'}
         login_info = dict((k, v[0]) for k, v in dict(request.form).items())
     # Password 加密回去对照数据库
     login_info['password'] = hashlib.md5(login_info['password'] + salt).hexdigest()
