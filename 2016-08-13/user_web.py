@@ -112,9 +112,11 @@ def userinfo():
     if not where['id']  and not where['name']:
         errmsg  = "must hava a where"
         return render_template('index.html', result = errmsg )
+
     # 如果传进来'id'但是没有传入'name'则condition = 'id = where[id]'(字典的格式化输出)
     if where['id'] and not where['name']:
        condition = 'id = "%(id)s"' % where
+
     # 如果传进来'name'但是没有传入'id'则condition = 'name = where[name]'(字典的格式化输出)
     if where['name'] and not where['id']:
        condition = 'name = "%(name)s"' % where
@@ -209,7 +211,7 @@ def login():
     if request.method == "POST":
         name = request.form.get('name')
         pwd = request.form.get('password')
-        print "name:%s,password:%s" %(name,pwd)
+        print "username:%s,password:%s" %(name,pwd)
         if not name and not pwd:
             errmsg = "username and password not null"
             return render_template('login.html',result=errmsg)
@@ -222,19 +224,19 @@ def login():
         fields = ['id', 'name', 'password']
         try:
             sql = "select %s from users where name='%s'" %(','.join(fields),name)
-            #print sql
+            print "sql: %s" % sql
             cur.execute(sql)
             res = cur.fetchone()
+            print "res: " % res
             user = {}
-            for i,k in enumerate(fields):
+            for i, k in enumerate(fields):
                 user[k]=res[i]
-            #print user['name'],name
-            #print user['password'],pwd
+            print "user: %s" % user
             if name == user['name']:
                 if pwd == user['password']:
                     return redirect('/userinfo?name=%s' % user['name'])
                     # return redirect('/userlist')
-        	    else:
+        	else:
                     errmsg = "password not correct"
                     return render_template('login.html',result=errmsg)
             else:
@@ -251,4 +253,4 @@ def page_not_found(error):
 
         
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8888,debug=True)
+    app.run(host='0.0.0.0', port=8888, debug=True)
