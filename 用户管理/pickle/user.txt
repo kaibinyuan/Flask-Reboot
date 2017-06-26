@@ -1,6 +1,14 @@
 (dp0
-S'lalala'
+S'shaojiabin'
 p1
-S'45678'
+S'123456'
 p2
+sS'pangyantao'
+p3
+S'123456'
+p4
+sS'nijing'
+p5
+S'45678'
+p6
 s.
