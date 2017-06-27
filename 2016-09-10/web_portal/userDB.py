@@ -89,7 +89,7 @@ class UserDB:
 
 if __name__ == "__main__":
     where = {"name": "kaibinyuan"}
-    field_list = ["name", "passowrd", "email", "mobile"]
+    field_list = ["name", "password", "email", "mobile"]
     field_add = {"name": "lisi", "name_cn": "lisijson", "password": "56789", "mobile": "1378589231"}
     modpass_dict = {"id": 3, "password": "qwer123"}
     field_update = {"id": 4, "name": "nijing", "name_cn": "nijing222", "password": "666666", "mobile": "15175090144"}
