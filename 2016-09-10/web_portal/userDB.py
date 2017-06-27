@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Date    : 2016-08-13 18:59:48
-# @Author  : yang ke (jack_keyang@163.com)
 
 import MySQLdb as mysql
 
@@ -82,4 +80,10 @@ class UserDB:
         conn = self.conn
         curs.execute(sql)
         conn.commit()
+
+if __name__ =="__main__":
+    where = '{"name":"kaibinyuan"}'
+    db = UserDB()
+    db.getone(where)
+    
 
