@@ -25,6 +25,7 @@ class UserDB:
         curs.execute(sql)
         result = curs.fetchall()
         u_list = [dict((k, row[i]) for i, k in enumerate(fields)) for row in result]
+        # u_list: [{'mobile': u'13681103249', 'name': u'kaibinyuan'}, ...]
         return u_list
 
     def getone(self, where):
@@ -35,6 +36,7 @@ class UserDB:
         curs.execute(sql)
         result = curs.fetchone()
         u_dict = dict((k, result[i])for i, k in enumerate(fields))
+        # u_dict: {'status': 0, 'name': u'kaibinyuan', 'mobile': u'13681103249',
         return u_dict
 
     def modfiy(self, fields):
@@ -48,7 +50,7 @@ class UserDB:
     def adduser(self, fields):
         curs = self.curs
         conn = self.conn
-        sql = "insert into users(%s)values('%s')" % (",".join(fields.keys()), "','".join(fields.values()))
+        sql = "insert into users(%s) values('%s')" % (",".join(fields.keys()), "','".join(fields.values()))
         curs.execute(sql)
         conn.commit()
 
@@ -59,12 +61,14 @@ class UserDB:
         curs.execute(sql)
         conn.commit()
 
-    def checkuser(self, dict,fields):
+    def checkuser(self, dict, fields):
         curs = self.curs
         sql = "select %s from users where %s='%s'" % (','.join(fields), dict.keys()[0], dict.values()[0])
         curs.execute(sql)
         result = curs.fetchone()
-        #res = dict((k, result[i]) for i, k in enumerate(fields))
+        res = dict((k, result[i]) for i, k in enumerate(fields))
+        return res
+        '''
         if result:
             res = {}
             for i, k in enumerate(fields):
@@ -73,6 +77,7 @@ class UserDB:
         else:
             res = ""
             return res
+        '''
 
     def modpasswd(self, dict):
         sql = "update users set password='%(password)s' where id=%(id)s" % dict
@@ -84,8 +89,15 @@ class UserDB:
 
 if __name__ == "__main__":
     where = {"name": "kaibinyuan"}
-    field = ["name", "passowrd", "email", "mobile"]
+    field_list = ["name", "passowrd", "email", "mobile"]
+    field_add = {"name": "lisi", "name_cn": "lisijson", "password": "56789", "mobile": "1378589231"}
+    modpass_dict = {"id": 3, "password": "qwer123"}
+    field_update = {"id": 4, "name": "nijing", "name_cn": "nijing222", "password": "666666", "mobile": "15175090144"}
+    del_uid = 6
     db = UserDB()
     db.getone(where)
-    db.userlist(field)
-
+    db.adduser(field_add)
+    db.delete(del_uid)
+    db.modpasswd(modpass_dict)
+    db.modfiy(field_update)
+    db.userlist(field_list)
