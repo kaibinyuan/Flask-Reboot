@@ -19,10 +19,10 @@ def index():
     if not session.get('username', None):
         return redirect("/login")
     result = user_db.getone({'name': session['username']})
-    print result
+    print "index_result: %s" % result
     # {'status': 0, 'name': u'tantianran', 'mobile': u'1355555555', 'name_cn': u'tantianran', 'id': 15L, 'role': u'CU', 'email': u'tantianran@reboot.com'}
     session["id"] = result['id']
-    print session
+    print "session: %s" % session
     # <SecureCookieSession {u'username': u'tantianran', u'role': u'CU'}>
     return render_template('user/index.html', info=session, user=result)
 

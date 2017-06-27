@@ -25,11 +25,11 @@ def login():
         login_info = dict((k, v[0]) for k, v in dict(request.form).items())
         # Password 加密回去对照数据库
         login_info['password'] = hashlib.md5(login_info['password'] + salt).hexdigest()
-        print login_info  # {'password': u'123456', 'name': u'yuanbinbin'}
+        print "login_info: %s" % login_info  # {'password': u'123456', 'name': u'yuanbinbin'}
 
         fields = ['name', 'password', 'role', 'status']
         result = user_db.checkuser({"name": login_info["name"]}, fields)
-        print result    # {'status': 0, 'password': u'123456', 'role': u'admin', 'name': u'yuanbinbin'}
+        print "login_result: %s" % result    # {'status': 0, 'password': u'123456', 'role': u'admin', 'name': u'yuanbinbin'}
 
         if not result:
             return json.dumps({"code": 1, "errmsg": "user is not exist"})

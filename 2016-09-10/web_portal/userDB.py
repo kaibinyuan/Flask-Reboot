@@ -64,11 +64,9 @@ class UserDB:
     def checkuser(self, dict, fields):
         curs = self.curs
         sql = "select %s from users where %s='%s'" % (','.join(fields), dict.keys()[0], dict.values()[0])
+        print "check_sql: %s" % sql
         curs.execute(sql)
         result = curs.fetchone()
-        res = dict((k, result[i]) for i, k in enumerate(fields))
-        return res
-        '''
         if result:
             res = {}
             for i, k in enumerate(fields):
@@ -77,7 +75,6 @@ class UserDB:
         else:
             res = ""
             return res
-        '''
 
     def modpasswd(self, dict):
         sql = "update users set password='%(password)s' where id=%(id)s" % dict
