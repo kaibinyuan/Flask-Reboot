@@ -1,0 +1,12 @@
+create table users(
+    id int auto_increment not null primary key,
+    name varchar(20) unique not null,
+    name_cn varchar(50) not null,
+    password varchar(50) not null,
+    email varchar(50) default null,
+    mobile varchar(11) not null,
+    role varchar(10) not null,
+    status tinyint(4) default null,
+    create_time datetime default null,
+    last_time datetime default null
+    )engine=innodb;
