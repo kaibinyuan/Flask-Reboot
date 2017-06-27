@@ -85,5 +85,5 @@ if __name__ =="__main__":
     where = '{"name":"kaibinyuan"}'
     db = UserDB()
     db.getone(where)
-    
+
 
