@@ -81,9 +81,11 @@ class UserDB:
         curs.execute(sql)
         conn.commit()
 
-if __name__ =="__main__":
-    where = '{"name":"kaibinyuan"}'
+
+if __name__ == "__main__":
+    where = {"name": "kaibinyuan"}
+    field = ["name", "passowrd", "email", "mobile"]
     db = UserDB()
     db.getone(where)
-
+    db.userlist(field)
 
